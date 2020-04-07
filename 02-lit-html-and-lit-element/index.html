@@ -4,20 +4,20 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+	<title>Open Web Components Codelabs: lit-html and LitElement</title>
 </head>
 
 <body>
 	<!--
-        lit-html
-        - write HTML templates in JavaScript
-        - efficiently render and re-render templates together
-          with data to create and update DOM
+		lit-html
+		- write HTML templates in JavaScript
+		- efficiently render and re-render templates together
+			with data to create and update DOM
 
-        lit-element
-        - simple base class for creating fast and
-          lightweight web components with lit-html
-        - takes care of most of the boilerplating 
+		lit-element
+		- simple base class for creating fast and
+			lightweight web components with lit-html
+		- takes care of most of the boilerplating 
 	-->
 
 	<todo-app></todo-app>
@@ -28,7 +28,6 @@
 	-->
 	<script type="module">
 		import { LitElement, html, css } from 'https://unpkg.com/lit-element?module';
-		// import './components/todos-list.js';
 
 		class TodoList extends LitElement {
 			static get properties() {
@@ -240,6 +239,8 @@
 
 		customElements.define('todo-app', TodoApp);
 	</script>
+
+	<!-- all comments are taken from: https://open-wc.org/codelabs/basics/lit-html.html -->
 </body>
 
 </html>

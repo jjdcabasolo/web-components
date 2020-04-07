@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Open Web Components Codelabs: lit-html and LitElement</title>
+</head>
+
+<body>
+	<style>
+		body {
+			font-family: monospace;
+		}
+
+		h1 {
+			color: pink;
+		}
+	</style>
+
+	<!--
+		02 templating: code reusability
+		- <template /> 
+		- allows us to define the structure of a piece
+			of a HTML upfront, and efficiently clone it when needed
+	-->
+	<template>
+		<style>
+			h1 {
+				color: red;
+			}
+		</style>
+
+		<h1>Hello world!</h1>
+	</template>
+
+	<!--
+		h1 style did not leak but
+		Not all CSS properties are encapsulated in this way.
+		Inherited properties such as fonts and color do inherit
+		through the shadow root when they are applied to a
+		parent element.
+	-->
+	<h1>Hello world!</h1>
+	<cool-heading />
+
+	<script>
+		// 01 custom elements: introduce new DOM elements
+		class CoolHeading extends HTMLElement {
+			constructor() {
+				super();
+
+				/*
+					We're adding the event listener in the constructor,
+					because the connectedCallback() method can be called
+					multiple times during the lifecycle of our element.
+					It would cause the event listener to be registered
+					multiple times if it was there.
+				*/
+				this.addEventListener('click', () => {
+					this.style.color = 'red';
+					console.log('event listener registered');
+				});
+			}
+
+			connectedCallback() {
+				// adding styles
+				this.style.color = 'blue';
+				console.log('cool heading connected!');
+
+				// using templates
+				const template = document.querySelector('template');
+				const clone = document.importNode(template.content, true);
+				// this.appendChild(clone);
+
+				/* 
+					03 shadow dom: DOM encapsulation
+					CSS scales scales pretty badly, because we constantly
+					need to make sure that the id's of all the elements
+					are unique and often CSS selectors can get pretty complex.
+					This is why many front-end frameworks offer some form
+					of encapsulation.
+
+					Children are wrapped in a shadow root, a special type of
+					DOM node which encapsulates the elements inside of it.
+					- Styles do not leak out
+					- Not possible to use a regular querySelector() to select
+						elements inside or outside the shadow root
+				*/
+				this.attachShadow({ mode: 'open' });
+				this.shadowRoot.appendChild(clone);
+			}
+		}
+
+		customElements.define('cool-heading', CoolHeading);
+	</script>
+
+	<!-- custom elements format -->
+	<!-- <script>
+		class MyElement extends HTMLElement {
+			constructor() {
+				super();
+				// called when the class is instantiated (standard js)
+			}
+
+			connectedCallback() {
+				/*
+						called when the element is connected to the page
+						this can be called multiple times during the element's lifecycle
+						for example when using drag&drop to move elements around
+				*/
+			}
+
+			disconnectedCallback() {
+				// called when the element is disconnected from the page
+			}
+		}
+	</script> -->
+
+	<!-- all comments are taken from: https://open-wc.org/codelabs/basics/web-components.html -->
+</body>
+
+</html>
