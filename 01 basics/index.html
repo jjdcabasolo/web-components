@@ -14,7 +14,7 @@
     </style>
 
     <!--
-        02 templating
+        02 templating: code reusability
         - <template /> 
         - allows us to define the structure of a piece
           of a HTML upfront, and efficiently clone it when needed
@@ -40,7 +40,7 @@
     <cool-heading />
 
     <script>
-        // 01 custom elements
+        // 01 custom elements: introduce new DOM elements
         class CoolHeading extends HTMLElement {
             constructor() {
                 super();
@@ -69,7 +69,7 @@
                 // this.appendChild(clone);
 
                 /* 
-                    03 shadow dom
+                    03 shadow dom: DOM encapsulation
                     CSS scales scales pretty badly, because we constantly
                     need to make sure that the id's of all the elements
                     are unique and often CSS selectors can get pretty complex.
