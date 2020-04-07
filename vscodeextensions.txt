@@ -1,9 +1,0 @@
-web components IDE extensions (from: https://open-wc.org/developing/ide.html#visual-studio-code)
-https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint
-https://marketplace.visualstudio.com/items?itemName=bierner.lit-html
-https://marketplace.visualstudio.com/items?itemName=runem.lit-plugin
-https://marketplace.visualstudio.com/items?itemName=jpoissonnier.vscode-styled-components
-
-proper template literal syntax highlighting
-https://marketplace.visualstudio.com/items?itemName=Tobermory.es6-string-html
-https://marketplace.visualstudio.com/items?itemName=bashmish.es6-string-css
