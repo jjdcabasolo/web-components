@@ -15,4 +15,5 @@ import { ConditionalRendering } from './lit-basic/07-conditional-rendering/Condi
 import { RepeatedTemplates } from './lit-basic/08-repeated-templates/RepeatedTemplates.js';
 import { UpdateArraysAndObjects } from './lit-basic/09-update-arrays-and-objects/UpdateArraysAndObjects.js';
 import { RenderStyles } from './lit-basic/10-render-styles/RenderStyles.js';
+import { FetchingData } from './lit-basic/11-fetching-data/FetchingData.js';
 import { SectionHeader } from './lit-basic/SectionHeader.js';
