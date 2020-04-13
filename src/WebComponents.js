@@ -77,3 +77,5 @@ export class WebComponents extends LitElement {
     `;
   }
 }
+
+// 00-web-components: default file from npm init @open-wc

@@ -1,6 +1,11 @@
 import { LitElement, html } from 'lit-element';
+import { sectionStyles } from '../styles/global-styles.js';
 
 export class ManageProperties extends LitElement {
+  static get styles() {
+    return sectionStyles;
+  }
+
   // Properties are defined through a static getter. When defined, LitElement will decode any
   // html attributes set on this component as properties which can be used from javascript.
 
@@ -15,7 +20,8 @@ export class ManageProperties extends LitElement {
 
   render() {
     return html`
-      <div>
+      <div class="section">
+        <h6>02-manage-properties</h6>
         <!--
           Dynamic parts of your template are set through template string expressions.
           It's plain javascript, so you can use any valid javascript expression. lit-html handles
@@ -44,3 +50,4 @@ export class ManageProperties extends LitElement {
 }
 
 // 02-manage-properties: https://webcomponents.dev/edit/collection/hzgpcWmPGvSJXSo4fs2a/c4Lm2o2EeQs4INPXH2pr
+customElements.define('manage-properties', ManageProperties);
