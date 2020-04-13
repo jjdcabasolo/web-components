@@ -16,4 +16,6 @@ import { RepeatedTemplates } from './lit-basic/08-repeated-templates/RepeatedTem
 import { UpdateArraysAndObjects } from './lit-basic/09-update-arrays-and-objects/UpdateArraysAndObjects.js';
 import { RenderStyles } from './lit-basic/10-render-styles/RenderStyles.js';
 import { FetchingData } from './lit-basic/11-fetching-data/FetchingData.js';
+import { FireEventsParent } from './lit-basic/12-firing-events/FireEventsParent.js';
+import { FireEventsChild } from './lit-basic/12-firing-events/FireEventsChild.js';
 import { SectionHeader } from './lit-basic/SectionHeader.js';
