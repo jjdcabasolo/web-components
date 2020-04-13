@@ -1,6 +1,6 @@
 import { LitElement, html } from "lit-element";
 
-import { sectionStyles } from '../styles/global-styles.js';
+import { sectionStyles } from '../../styles/global-styles.js';
 
 const messagePrefix = "The message is: ";
 

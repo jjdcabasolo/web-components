@@ -1,6 +1,6 @@
 // LitElement and html are the basic required imports
 import { LitElement, html } from 'lit-element';
-import { sectionStyles } from '../styles/global-styles.js';
+import { sectionStyles } from '../../styles/global-styles.js';
 
 // Create a class definition for your component and extend the LitElement base class
 export class BasicSetup extends LitElement {
