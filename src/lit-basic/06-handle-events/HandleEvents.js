@@ -1,11 +1,6 @@
 import { LitElement, html } from "lit-element";
-import { sectionStyles } from '../../styles/global-styles.js';
 
 export class HandleEvents extends LitElement {
-  static get styles() {
-    return sectionStyles;
-  }
-
   static get properties() {
     return {
       count: { type: Number }
@@ -20,8 +15,7 @@ export class HandleEvents extends LitElement {
 
   render() {
     return html`
-      <div class="section">
-        <h6>06-handle-events</h6>
+      <section-header header="06-handle-events">
         Current count: [${this.count}]
         <!-- Use @[eventname] syntax to declaratively register inline event handlers -->
         <button @click=${this._handleAdd}>+</button>
@@ -31,7 +25,7 @@ export class HandleEvents extends LitElement {
           as the function scope ('this' will reference the element)
         -->
         <button @click=${this._handleDeduct}>-</button>
-      </div>
+      </section-header>
     `;
   }
 
@@ -44,4 +38,5 @@ export class HandleEvents extends LitElement {
   }
 }
 
+// 06-handle-events: https://webcomponents.dev/edit/collection/hzgpcWmPGvSJXSo4fs2a/M3OUIoHe9XAgfUa7hCkd
 customElements.define('handle-events', HandleEvents);

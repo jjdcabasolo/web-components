@@ -1,11 +1,6 @@
 import { LitElement, html } from "lit-element";
-import { sectionStyles } from '../../styles/global-styles.js';
 
 export class PassingProperties extends LitElement {
-  static get styles() {
-    return sectionStyles;
-  }
-
   static get properties() {
     return {
       author: { type: Object },
@@ -28,11 +23,10 @@ export class PassingProperties extends LitElement {
    */
   render() {
     return html`
-      <div class="section">
-        <h6>05-passing-properties</h6>
+      <section-header header="05-passing-properties">
         <author-profile .author=${this.author} .books=${this.books}>
         </author-profile>
-      </div>
+      </section-header>
     `;
   }
 }

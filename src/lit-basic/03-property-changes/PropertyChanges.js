@@ -1,11 +1,6 @@
 import { LitElement, html } from "lit-element";
-import { sectionStyles } from '../../styles/global-styles.js';
 
 export class PropertyChanges extends LitElement {
-  static get styles() {
-    return sectionStyles;
-  }
-
   // Any changes to properties defined in the static properties will trigger a re-render
   // of the component.
   static get properties() {
@@ -28,13 +23,12 @@ export class PropertyChanges extends LitElement {
   render() {
     const [h, m, s] = this._calculateTime();
     return html`
-      <div class="section">
-        <h6>03-property-changes</h6>
+      <section-header header="03-property-changes">
         <div>
           Time spent: ${h} ${m} ${s}
         </div>
         <p>(time flies at 1ms)</p>
-      </div>
+      </section-header>
     `;
   }
 

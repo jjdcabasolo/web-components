@@ -1,14 +1,8 @@
 import { LitElement, html } from "lit-element";
 
-import { sectionStyles } from '../../styles/global-styles.js';
-
 const messagePrefix = "The message is: ";
 
 export class PropertiesAndAttributes extends LitElement {
-  static get styles() {
-    return sectionStyles;
-  }
-
   static get properties() {
     return {
       href: { type: String },
@@ -49,8 +43,7 @@ export class PropertiesAndAttributes extends LitElement {
    */
   render() {
     return html`
-      <div class="section">
-        <h6>04-properties-and-attributes</h6>
+      <section-header header="04-properties-and-attributes">
 
         <!-- By default lit-html will set an attribute on the element -->
         <a href=${this.href}>
@@ -76,7 +69,7 @@ export class PropertiesAndAttributes extends LitElement {
         -->
         <fancy-message messageprefix="The message is: " .message=${this.message}>
         </fancy-message>
-      </div>
+      </section-header>
     `;
   }
 }

@@ -6,7 +6,7 @@ export const sectionStyles = css`
     font-family: monospace;
     font-size: 24px;
     letter-spacing: 1.5px;
-    margin: 24px 0 8px 0;
+    margin: 40px 0 8px 0;
   }
   .section {
     padding: 0 24px;

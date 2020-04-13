@@ -10,3 +10,6 @@ import { FancyMessage } from './lit-basic/04-properties-and-attributes/FancyMess
 import { PassingProperties } from './lit-basic/05-passing-properties/PassingProperties.js';
 import { AuthorProfile } from './lit-basic/05-passing-properties/AuthorProfile.js';
 import { HandleEvents } from './lit-basic/06-handle-events/HandleEvents.js';
+import { ConditionalRendering } from './lit-basic/07-conditional-rendering/ConditionalRendering.js';
+import { RepeatedTemplates } from './lit-basic/08-repeated-templates/RepeatedTemplates.js';
+import { SectionHeader } from './lit-basic/SectionHeader.js';
