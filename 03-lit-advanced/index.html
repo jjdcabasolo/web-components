@@ -5,6 +5,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>(intermediate) lit-html & lit-element OpenWC Codelab</title>
+  <style>
+    html {
+      --text-primary: #757575;
+      --text-inactive: #BDBDBD;
+      --text-active: #424242;
+
+      --type-micro: #F9A825;
+      --type-brewpub: #2E7D32;
+      --type-regional: #0277BD;
+      --type-contract: #4527A0;
+    }
+  </style>
 </head>
 
 <body>
@@ -21,7 +33,7 @@
         return css`
           :host {
             font-family: monospace;
-            color: #757575;
+            color: var(--text-primary);
           }
           main {
             max-width: 800px;
@@ -39,8 +51,21 @@
           .dashboard {
             margin-bottom: 32px;
           }
-          .active {
-            color: red;
+          button {
+            background-color: transparent;
+            border: none;
+            border-width: 1px;
+            border-style: solid;
+            border-color: var(--text-active);
+            color: var(--text-active);
+            padding: 2px 6px;
+            font-family: monospace;
+          }
+          button:focus {
+            outline: none;
+          }
+          .inactive {
+            opacity: 20%;
           }
         `;
       }
@@ -49,7 +74,10 @@
         return {
           breweries: { type: Array },
           isFetching: { type: Boolean },
-          filter: { type: String },
+          visitFilter: { type: String },
+          types: { type: Array },
+          typeFilter: { type: String },
+          error: { type: String },
         }
       }
 
@@ -58,7 +86,10 @@
 
         this.breweries = [];
         this.isFetching = false;
-        this.filter = 'none';
+        this.visitFilter = 'none';
+        this.types = [];
+        this.typeFilter = 'none';
+        this.error = '';
       }
 
 			connectedCallback() {
@@ -73,9 +104,20 @@
         const visitedCount = this.breweries.filter(e => e.visited).length;
         const breweriesToDisplay = this._filterBreweries();
 
+        // console.log("BreweryApp -> render -> this.error", this.error)
+        if (this.error !== '') {
+          return html`
+            <main>
+              <p>${this.error}</p>
+            </main>
+          `
+        }
+
         if (this.isFetching) {
           return html`
-            <p>Loading breweries...</p>
+            <main>
+              <p>Loading breweries...</p>
+            </main>
           `;
         }
 
@@ -89,21 +131,41 @@
 
               |
 
-              <button class="${this.filter === 'visit' ? 'active' : ''}" @click="${() => this._toggleFilter('visit')}">visited</button>
-              <button class="${this.filter === 'unvisit' ? 'active' : ''}" @click="${() => this._toggleFilter('unvisit')}">not visited</button>
-              filter
+              <button
+                class="${this.visitFilter === 'visit' ? '' : 'inactive'}"
+                @click="${() => this._toggleFilter(0, 'visit')}"
+              >visited</button>
+              <button
+                class="${this.visitFilter === 'unvisit' ? '' : 'inactive'}"
+                @click="${() => this._toggleFilter(0, 'unvisit')}"
+              >not visited</button>
+
+              ${this.types.map(e => html`
+                <brewery-type
+                  type="${e}"
+                  inline
+                  activeFilter="${this.typeFilter}"
+                  @toggle-filter=${() => this._toggleFilter(1, e)}
+                ></brewery-type>
+              `)}
+              filters
             </div>
               
-            ${breweriesToDisplay.map(brewery => html`
-              <brewery-detail
-                .city="${brewery.city}, ${brewery.state}"
-                .id="${brewery.id}"
-                .name="${brewery.name}"
-                .type="${brewery.brewery_type}"
-                .visited="${brewery.visited}"
-                @toggle-visit-status=${() => this._toggleVisitStatus(brewery)}
-              ></brewery-detail>
-            `)}
+            ${breweriesToDisplay.length > 0
+              ? breweriesToDisplay.map(brewery => html`
+                <brewery-detail
+                  .city="${brewery.city}, ${brewery.state}"
+                  .id="${brewery.id}"
+                  .name="${brewery.name}"
+                  .type="${brewery.brewery_type}"
+                  .visited="${brewery.visited}"
+                  @toggle-visit-status=${() => this._toggleVisitStatus(brewery)}
+                ></brewery-detail>
+              `)
+              : html`
+                No results. 😢
+              `
+            }
           </main>
         `;
       }
@@ -113,10 +175,11 @@
         try {
           const response = await fetch('https://api.openbrewerydb.org/breweries');
           const jsonResponse = await response.json();
-          console.log("BreweryApp -> _fetchBreweries -> jsonResponse", jsonResponse)
+          // console.log("BreweryApp -> _fetchBreweries -> jsonResponse", jsonResponse)
           this.breweries = jsonResponse;
+          this.types = [...new Set(jsonResponse.map(e => e.brewery_type))];
         } catch (e) {
-          console.log(e);
+          this.error = 'Failed to load. Check ur web browser\'s console 😞';
         }
         this.isFetching = false;
       }
@@ -129,19 +192,32 @@
         );
       }
 
-      _toggleFilter(mode) {
-        if (this.filter === mode) this.filter = 'none';
-        else this.filter = mode;
+      _toggleFilter(type, mode) {
+        if (type === 0) { // visit filter
+          if (this.visitFilter === mode) this.visitFilter = 'none';
+          else this.visitFilter = mode;
+        } else if (type === 1) { // type filter
+          console.log('eyy')
+          if (this.typeFilter === mode) this.typeFilter = 'none';
+          else this.typeFilter = mode;
+        }
       }
 
       _filterBreweries() {
-        if (this.filter !== 'none') {
-          return this.breweries.filter(e => {
-            if (this.filter === 'visit') return e.visited;
+        let filteredBreweries = [...this.breweries];
+        
+        if (this.visitFilter !== 'none') {
+          filteredBreweries = filteredBreweries.filter(e => {
+            if (this.visitFilter === 'visit') return e.visited;
             return !e.visited;
           });
         }
-        return this.breweries;
+
+        if (this.typeFilter !== 'none') {
+          filteredBreweries = filteredBreweries.filter(e => e.brewery_type === this.typeFilter);
+        }
+        
+        return filteredBreweries;
       }
     }
 
@@ -172,35 +248,12 @@
             align-items: center;
           }
           h1 {
-            color: #757575;
+            color: var(--text-primary);
             margin: 0;
             font-weight: 500;
           }
           .visited {
             opacity: 20%;
-          }
-          .type {
-            border-radius: 12px;
-            border: 1px solid #ccc;
-            padding: 2px 6px;
-            width: fit-content;
-            height: fit-content;
-          }
-          .micro {
-            border-color: #F9A825;
-            color: #F9A825;
-          }
-          .brewpub {
-            border-color: #2E7D32;
-            color: #2E7D32;
-          }
-          .regional {
-            border-color: #0277BD;
-            color: #0277BD;
-          }
-          .contract {
-            border-color: #4527A0;
-            color: #4527A0;
           }
           .city {
             color: #9E9E9E;
@@ -226,7 +279,7 @@
             <div class="item center"><input type="checkbox" ?checked="${this.visited}" /></div>
             <div class="item container wrap">
               <div class="item"><h1>${this.name}</h1></div>
-              <div class="item center"><div class="type ${this.type}">${this.type}</div></div>
+              <div class="item center"><brewery-type type="${this.type}"></brewery-type></div>
               <div class="item center"><div class="city">${this.city}</div></div>
             </div>
           </div>
@@ -239,6 +292,68 @@
     }
 
     customElements.define('brewery-detail', BreweryDetail);
+
+    // ------------------------------------------------------------------------
+
+    class BreweryType extends LitElement {
+      static get styles() {
+        return css`
+          .type {
+            border-radius: 12px;
+            border: 1px solid #ccc;
+            padding: 2px 6px;
+            width: fit-content;
+            height: fit-content;
+            cursor: pointer;
+          }
+          .inactive {
+            opacity: 20%;
+          }
+          .inline {
+            display: inline;
+          }
+          .micro {
+            border-color: var(--type-micro);
+            color: var(--type-micro);
+          }
+          .brewpub {
+            border-color: var(--type-brewpub);
+            color: var(--type-brewpub);
+          }
+          .regional {
+            border-color: var(--type-regional);
+            color: var(--type-regional);
+          }
+          .contract {
+            border-color: var(--type-contract);
+            color: var(--type-contract);
+          }
+        `
+      }
+
+      static get properties() {
+        return {
+          type: { type: String },
+          activeFilter: { type: String },
+          inline: { inline: String },
+        }
+      }
+      
+      render() {
+        return html`
+          <div
+            class="type ${this.type} ${this.inline === '' ? 'inline' : ''} ${this.activeFilter === this.type || !this.activeFilter ? '' : 'inactive'}"
+            @click=${this._toggleFilter}
+          >${this.type}</div>
+        `
+      }
+
+      _toggleFilter() {
+        this.dispatchEvent(new CustomEvent('toggle-filter'));
+      }
+    }
+
+    customElements.define('brewery-type', BreweryType);
 
   </script>
 </body>
