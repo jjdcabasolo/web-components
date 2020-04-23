@@ -150,7 +150,10 @@
               `)}
               filters
             </div>
-              
+
+            <input name="search" type="text" />
+            ${this.shadowRoot.querySelector('input').value}
+            
             ${breweriesToDisplay.length > 0
               ? breweriesToDisplay.map(brewery => html`
                 <brewery-detail
